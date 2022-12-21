@@ -10,16 +10,25 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:fengtao-web.helloWorld"
+    "onCommand:fengtao-web.createFiles"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "fengtao-web.helloWorld",
-        "title": "Hello World"
+        "command": "fengtao-web.createFiles",
+        "title": "%cmd.createFiles.title%"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "fengtao-web.createFiles",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",
