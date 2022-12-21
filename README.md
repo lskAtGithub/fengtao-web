@@ -1,6 +1,6 @@
 # fengtao-web README
 
-This is the README for your extension "fengtao-web". After writing up a brief description, we recommend including the following sections.
+峰涛科技有限公司 vscode 插件
 
 ## Features
 
