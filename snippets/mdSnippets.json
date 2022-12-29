@@ -2,22 +2,19 @@
   "md-base": {
     "prefix": "mdbase",
     "body": [
-      "### list-table 组件文档",
+      "### 组件文档",
       "",
-      "`list-table` 是根据 el-table + el-pagination 的二次封装组件",
-      "内容是一个表格 + 分页",
-      "所有的原生绑定以及原生事件都支持",
+      "desc",
       "",
       "##### Attributes",
       "| 参数 | 说明 | 类型 | 可选值 | 默认值 |",
       "| --- | --- | --- | --- | --- |",
-      "| nodes | pagination size, current 的键值对映射 | Object | -- | {current: 'current', size: 'size' } |",
-      "| pagination | 分页传参 | Object | -- | -- |",
+      "| -- | -- | -- | -- | -- |",
       "",
       "##### Events",
       "| 事件名 | 说明 | 回调参数 |",
       "| --- | --- | --- |",
-      "| pagingChange | size或者current-page改变时触发 | { size, currentPage } |",
+      "| -- | -- | -- |",
       ""
     ],
     "description": "md-base"
