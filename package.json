@@ -19,11 +19,15 @@
     "snippets": [
       {
         "language": "vue",
-        "path": "./snippets/vueCommon.json"
+        "path": "./snippets/vueSnippets.json"
       },
       {
         "language": "javascript",
-        "path": "./snippets/jsCommon.json"
+        "path": "./snippets/jsSnippets.json"
+      },
+      {
+        "language": "markdown",
+        "path": "./snippets/mdSnippets.json"
       }
     ],
     "commands": [
