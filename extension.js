@@ -18,15 +18,6 @@ function activate(context) {
   // 创建页面
   context.subscriptions.push(CreatePages)
 
-  let autoImportEvent = vscode.commands.registerCommand(
-    'extension.fixImport',
-    () => {
-      console.log('run this')
-    }
-  )
-
-  context.subscriptions.push(autoImportEvent)
-
   // 代码编辑
   // vscode.window.registerTreeDataProvider('edit-code', editCode)
 }
