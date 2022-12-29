@@ -1,3 +1,23 @@
 {
-  
+  "vue base": {
+    "prefix": "vb",
+    "body": [
+      "<template>",
+      "  <div>",
+      "",
+      "  </div>",
+      "</template>",
+      "",
+      "<script>",
+      "  export default {",
+      "    name: ''",
+      "  }",
+      "</script>",
+      "",
+      "<style scoped lang=\"scss\">",
+      "",
+      "</style>"
+    ],
+    "description": "vue base"
+  }
 }
