@@ -33,5 +33,39 @@
       ""
     ],
     "description": "base-route"
+  },
+  "apiget": {
+    "prefix": "apiget",
+    "body": [
+      "/**",
+      " * @param params[]",
+      " * @returns ",
+      " */",
+      "export function apiName(params) {",
+      "  return request({",
+      "    url: '',",
+      "    method: 'get',",
+      "    params",
+      "  })",
+      "}"
+    ],
+    "description": "apiget"
+  },
+  "apipost": {
+    "prefix": "apipost",
+    "body": [
+      "/**",
+      " * @param data[]",
+      " * @returns ",
+      " */",
+      "export function apiName(data) {",
+      "  return request({",
+      "    url: '',",
+      "    method: 'post',",
+      "    data",
+      "  })",
+      "}"
+    ],
+    "description": "apipost"
   }
 }
