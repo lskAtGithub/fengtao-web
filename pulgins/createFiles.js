@@ -41,7 +41,8 @@ class CreateFiles {
       return
     }
     try {
-      this.createEvent(uri.fsPath, fileName, hasKeyinTypes)
+      vscode.window.showInformationMessage(uri.fsPath)
+      this.createFilesEvent(uri.fsPath, fileName, hasKeyinTypes)
     } catch (error) {
       vscode.window.showErrorMessage(`Error: ${error.message}`)
       return
@@ -67,8 +68,7 @@ class CreateFiles {
       prompt: `文件名`,
     })
   }
-
-  createEvent(dir, fileName, hasType) {
+  createFilesEvent(dir, fileName, hasType) {
     const dirname = path.join(dir, fileName)
     if (fs.existsSync(dirname)) {
       vscode.window.showErrorMessage('文件名已存在, 创建失败')

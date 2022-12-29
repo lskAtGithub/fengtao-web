@@ -10,10 +10,22 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:fengtao-web.createFiles"
+    "onCommand:fengtao-web.createFiles",
+    "onLanguage:vue",
+    "onLanguage:javascript"
   ],
   "main": "./extension.js",
   "contributes": {
+    "snippets": [
+      {
+        "language": "vue",
+        "path": "./snippets/vueCommon.json"
+      },
+      {
+        "language": "javascript",
+        "path": "./snippets/jsCommon.json"
+      }
+    ],
     "commands": [
       {
         "command": "fengtao-web.createFiles",
@@ -26,6 +38,23 @@
           "command": "fengtao-web.createFiles",
           "when": "explorerResourceIsFolder",
           "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "edit-code",
+          "title": "CODE EDIT",
+          "icon": "/images/code.svg"
+        }
+      ]
+    },
+    "views": {
+      "edit-code": [
+        {
+          "name": "xx",
+          "id": "fund-list"
         }
       ]
     }

@@ -1,0 +1,37 @@
+{
+  "fengtao-router": {
+    "prefix": "ftrouter",
+    "body": [
+      "import Layout from '@/layout'",
+      "",
+      "const routeName = {",
+      "  path: '/',",
+      "  component: Layout,",
+      "  alwaysShow: true,",
+      "  meta: { title: '', icon: '', affix: true, breadcrumb: false, accessPermission: true },",
+      "  redirect: '',",
+      "  children: [",
+      "    {",
+      "      path: '/',",
+      "      component: () => import(''),",
+      "      name: '',",
+      "      alwaysShow: true,",
+      "      meta: { title: '', icon: '', affix: true, accessPermission: true },",
+      "      children: [",
+      "        {",
+      "          path: '/',",
+      "          component: () => import(''),",
+      "          name: '',",
+      "          meta: { title: '', icon: '', affix: true, accessPermission: true, refreshBtn: true }",
+      "        }",
+      "      ]",
+      "    }",
+      "  ]",
+      "}",
+      "",
+      "export default routeName",
+      ""
+    ],
+    "description": "base-route"
+  }
+}
