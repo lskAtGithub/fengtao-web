@@ -44,23 +44,6 @@
           "group": "navigation"
         }
       ]
-    },
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "edit-code",
-          "title": "CODE EDIT",
-          "icon": "/images/code.svg"
-        }
-      ]
-    },
-    "views": {
-      "edit-code": [
-        {
-          "name": "xx",
-          "id": "fund-list"
-        }
-      ]
     }
   },
   "scripts": {

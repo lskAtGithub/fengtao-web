@@ -19,7 +19,6 @@ function activate(context) {
   context.subscriptions.push(CreatePages)
 
   // 代码编辑
-  // vscode.window.registerTreeDataProvider('edit-code', editCode)
 }
 
 function deactivate() {}
