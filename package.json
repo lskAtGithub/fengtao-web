@@ -34,6 +34,14 @@
       {
         "command": "fengtao-web.createFiles",
         "title": "%cmd.createFiles.title%"
+      },
+      {
+        "command": "fengtao-web.editCode",
+        "title": "可视化组件编辑",
+        "icon": {
+          "light": "/images/editCode.svg",
+          "dark": "/images/editCode.svg"
+        }
       }
     ],
     "menus": {
@@ -41,6 +49,25 @@
         {
           "command": "fengtao-web.createFiles",
           "when": "explorerResourceIsFolder",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceLangId == javascript",
+          "command": "fengtao-web.editCode",
+          "group": "z_commands"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "resourceLangId == javascript",
+          "command": "fengtao-web.editCode",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "when": "resourceLangId == javascript",
+          "command": "fengtao-web.editCode",
           "group": "navigation"
         }
       ]

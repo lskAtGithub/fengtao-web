@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width,initial-scale=1">
+  <title>el-demo</title>
+  <script src="../../lib/vue-2.5.17/vue.js"></script>
+</head>
+
+<body>
+  <div id=app>
+    <div>
+      <input type="text">
+    </div>
+    <div>
+      xx
+    </div>
+    <div>
+      ??
+    </div>
+  </div>
+
+
+  <script>
+    const test = document.querySelector('#test')
+    new Vue({
+      el: '#app',
+      data: {
+        msg: 'xxx'
+      },
+      methods: {
+        handleClick() {
+          this.msg = 'nnn'
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -4,6 +4,7 @@ const os = require('os')
 const path = require('path')
 
 const util = {
+
   /**
    * 获取当前所在工程根目录，有3种使用方法：<br>
    * getProjectPath(uri) uri 表示工程内某个文件的路径<br>
