@@ -28,7 +28,7 @@ const registerEditCode = (context) => {
     vscode.commands.registerCommand('fengtao-web.editCode', function () {
       const panel = vscode.window.createWebviewPanel(
         'editCode', // viewType
-        '可视化代码编辑', // 视图标题
+        '可视化生成代码配置', // 视图标题
         vscode.ViewColumn.One, // 显示在编辑器的哪个部位
         {
           enableScripts: true, // 启用JS，默认禁用

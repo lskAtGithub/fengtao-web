@@ -37,7 +37,7 @@
       },
       {
         "command": "fengtao-web.editCode",
-        "title": "可视化组件编辑",
+        "title": "可视化生成代码配置",
         "icon": {
           "light": "/images/editCode.svg",
           "dark": "/images/editCode.svg"

@@ -4,37 +4,298 @@
 <head>
   <meta charset=utf-8>
   <meta name=viewport content="width=device-width,initial-scale=1">
-  <title>el-demo</title>
-  <script src="../../lib/vue-2.5.17/vue.js"></script>
+  <title>可视化生成代码配置</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f9f9f9;
+      font-size: 14px;
+      color: #1e2227;
+      overflow: hidden;
+    }
+
+    .require {
+      position: relative;
+    }
+
+    .require::after {
+      content: '*';
+      color: red;
+      position: absolute;
+      left: -12px;
+    }
+
+    .button {
+      background: #fff;
+      border: none;
+      box-shadow: 0 0 5px 0 #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 4px 16px;
+      margin-left: 15px;
+    }
+
+    .input {
+      padding: 0 16px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 12px;
+      color: #1e2227;
+      width: 100%;
+    }
+
+    .select {
+      padding: 0 16px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      outline: none;
+      text-align: right;
+      font-size: 12px;
+      color: #1e2227;
+      width: 100%;
+    }
+
+    #tipsModelDom {
+      position: fixed;
+      width: 450px;
+      box-shadow: 0 0 5px 0 #ccc;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      background: #fff;
+      color: #1e2227;
+      border-radius: 5px;
+      padding: 18px 30px;
+    }
+
+    .model-btns {
+      text-align: right;
+      padding-top: 18px;
+    }
+
+    .mask {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #23272e;
+      opacity: 0.5;
+      z-index: 2;
+    }
+
+    #tipContent {
+      padding: 18px 12px;
+    }
+
+    #app {
+      display: flex;
+      width: 100vw;
+      height: calc(100vh - 79px);
+      overflow: hidden;
+    }
+
+    .app-items {
+      flex: 1;
+      padding: 25px 12px;
+      overflow-y: auto;
+    }
+
+    .app-items .title {
+      margin-bottom: 18px;
+    }
+
+    .modules .module-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      position: relative;
+    }
+
+    .modules .module-item:hover::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      border: 1px dashed #ccc;
+      cursor: pointer;
+    }
+
+    .modules .module-item.active {
+      box-shadow: inset 0 0 5px 0 #ccc;
+      border-radius: 5px;
+    }
+
+    .modules .module-item.active:hover::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+
+    .modules .module-item .label {
+      font-weight: 600;
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .modules .module-item .model {
+      flex: 1;
+    }
+
+    #preview-box {
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+    }
+
+    .configuration-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+    }
+
+    .configuration-item .label {
+      width: 80px;
+      font-weight: 600;
+    }
+
+    .configuration-item .val {
+      flex: 1;
+    }
+
+    .update-preview {
+      text-align: right;
+      height: 60px;
+      line-height: 60px;
+      padding: 0 25px;
+      border-top: 1px solid #ddd;
+    }
+  </style>
 </head>
 
 <body>
   <div id=app>
-    <div>
-      <input type="text">
+    <!-- 组件区 -->
+    <div id="modules-box" class="app-items">
+      <h2 class="title">组件选择</h2>
+      <div class="modules">
+        <div class="module-item" onclick="addPreviewArea('input')">
+          <div class="label">input：</div>
+          <div class="input model"></div>
+        </div>
+      </div>
+      <div class="modules">
+        <div class="module-item" onclick="addPreviewArea('select')">
+          <div class="label">select: </div>
+          <div class="select model">
+            <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+              p-id="3458" width="15" height="15">
+              <path
+                d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z"
+                p-id="3459"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      xx
+    <!-- 预览区 -->
+    <div id="preview-box" class="app-items">
+      <h2 class="title">效果预览</h2>
+      <div id="preview-area" class="modules"></div>
     </div>
-    <div>
-      ??
+    <!-- 属性配置区 -->
+    <div class="app-items">
+      <h2 class="title">属性配置</h2>
+      <div id="configuration"></div>
+    </div>
+  </div>
+  <div class="update-preview">
+    <button class="button" id="previewEvent">更新预览</button>
+    <button class="button" id="previewEvent">生成代码</button>
+  </div>
+
+  <div class="mask tipsModel" style="display: none;" onclick="hideTips()"></div>
+  <div style="display: none;" class="tipsModel" id="tipsModelDom">
+    <div id="tipContent"></div>
+    <div class="model-btns">
+      <button class="button model-btn" onclick="hideTips()">确认</button>
     </div>
   </div>
 
-
   <script>
-    const test = document.querySelector('#test')
-    new Vue({
-      el: '#app',
-      data: {
-        msg: 'xxx'
-      },
-      methods: {
-        handleClick() {
-          this.msg = 'nnn'
-        }
-      }
+    var configDomList = []
+    var previewDomList = []
+    const preview = document.querySelector('#previewEvent')
+    preview.addEventListener('click', function() {
+      showTips('随便写点tips')
     })
+
+    function showTips(tipsContent) {
+      const tipContent = document.querySelector('#tipContent')
+      const tips = document.querySelectorAll('.tipsModel')
+      tipContent.innerHTML = tipsContent
+      tips.forEach(item => {
+        item.style.display = 'block'
+      })
+    }
+
+    function hideTips() {
+      const tips = document.querySelectorAll('.tipsModel')
+      const tipContent = document.querySelector('#tipContent')
+      tipContent.innerHTML = ''
+      tips.forEach(item => {
+        item.style.display = 'none'
+      })
+    }
+
+    function copy(content) {
+      navigator.clipboard.writeText(content)
+        .then(() => {
+          console.log("Text copied to clipboard...")
+        })
+        .catch(err => {
+          console.log('Something went wrong', err);
+        })
+    }
+    function addPreviewArea(type) {
+      const area = document.querySelector('#preview-area')
+      const inputModel = `<div class="module-item" onclick="selectorAttr(this, 'input')"> <div class="label">input：</div> <div class="input model"></div> </div>`
+      const selectModel = `<div class="module-item" onclick="selectorAttr(this, 'select')"> <div class="label">select: </div> <div class="select model"> <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3458" width="15" height="15"> <path d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z" p-id="3459"></path> </svg> </div>`
+      if (type === 'input') area.innerHTML += inputModel
+      if (type === 'select') area.innerHTML += selectModel
+    }
+    function selectorAttr(e, type) {
+      const configuration = document.querySelector('#configuration')
+      const preview = document.querySelector('#preview-area')
+      const previewItems = preview.querySelectorAll('.module-item')
+      previewItems.forEach(item => {
+        item.classList.remove('active')
+      })
+      e.classList.add('active')
+      const label = `<div class="configuration-item"> <div class="label">label：</div> <div class="val"><input type="text" class="input" placeholder="请输入label值" /></div> </div>`
+      const model = `<div class="configuration-item"> <div class="require label">model：</div> <div class="val"><input type="text" class="input" placeholder="请输入双向绑定的字段" /></div> </div>`
+      const data = `<div class="configuration-item"> <div class="require label">数据源：</div> <div class="val"><input type="text" class="input" placeholder="请输入数据源的字段" /></div> </div>`
+      let inputConfig = []
+      configuration.innerHTML = ''
+      if (type === 'input') inputConfig = [label, model]
+      if (type === 'select') inputConfig = [label, model, data]
+      inputConfig.forEach(item => {
+        configuration.innerHTML += item
+      })
+    }
   </script>
 </body>
 
