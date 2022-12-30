@@ -65,6 +65,26 @@
       width: 100%;
     }
 
+    .dateSelect {
+      padding: 0 16px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      outline: none;
+      text-align: left;
+      font-size: 12px;
+      color: #1e2227;
+      position: relative;
+      width: 100%;
+    }
+
+    .dateSelect > svg {
+      position: absolute;
+      left: 8px;
+      top: 5px;
+    }
+
     #tipsModelDom {
       position: fixed;
       width: 450px;
@@ -148,7 +168,7 @@
 
     .modules .module-item .label {
       font-weight: 600;
-      width: 80px;
+      width: 85px;
       flex-shrink: 0;
     }
 
@@ -176,6 +196,11 @@
       flex: 1;
     }
 
+    .config-btn {
+      text-align: right;
+      margin-top: 18px;
+    }
+
     .update-preview {
       text-align: right;
       height: 60px;
@@ -192,23 +217,10 @@
     <div id="modules-box" class="app-items">
       <h2 class="title">组件选择</h2>
       <div class="modules">
-        <div class="module-item" onclick="addPreviewArea('input')">
+        <!-- <div class="module-item" onclick="addPreviewArea('input')">
           <div class="label">input：</div>
           <div class="input model"></div>
-        </div>
-      </div>
-      <div class="modules">
-        <div class="module-item" onclick="addPreviewArea('select')">
-          <div class="label">select: </div>
-          <div class="select model">
-            <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-              p-id="3458" width="15" height="15">
-              <path
-                d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z"
-                p-id="3459"></path>
-            </svg>
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- 预览区 -->
@@ -220,11 +232,15 @@
     <div class="app-items">
       <h2 class="title">属性配置</h2>
       <div id="configuration"></div>
+      <div class="config-btn">
+        <button class="button" onclick="removePreviewArea()">删除所选中dom</button>
+        <button class="button" onclick="onChangeAttr()">确认修改</button>
+      </div>
     </div>
   </div>
   <div class="update-preview">
-    <button class="button" id="previewEvent">更新预览</button>
-    <button class="button" id="previewEvent">生成代码</button>
+    <button class="button">更新预览</button>
+    <button class="button">生成代码</button>
   </div>
 
   <div class="mask tipsModel" style="display: none;" onclick="hideTips()"></div>
@@ -236,12 +252,40 @@
   </div>
 
   <script>
-    var configDomList = []
+    // 当前选中的元素
+    var currentActiveIndex = null
+    // preview中所有的dom元素
     var previewDomList = []
-    const preview = document.querySelector('#previewEvent')
-    preview.addEventListener('click', function() {
-      showTips('随便写点tips')
-    })
+    // 组件渲染的dom对象
+    const moduleDom = {
+      input: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label：</div> <div class="input model"></div> </div>`,
+      select: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="select model"> <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3458" width="15" height="15"> <path d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z" p-id="3459"></path> </svg> </div>`,
+      dateSelect: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="dateSelect model"> <svg t="1672398249238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4576" width="20" height="20"><path d="M390.784 128l-0.064 44.416h234.176V128h64v44.416h198.08V832H128V172.416h198.72V128h64zM326.72 235.584l-135.488 0.064v533.12h632.512v-533.12l-134.848-0.064v59.904h-64v-59.904H390.72v59.904h-64v-59.904z m202.432 216.96v254.4h53.888v32.384H426.88v-32.384h59.648V527.68l0.192-9.664 0.448-9.856-45.952 38.784-3.008 1.92-3.072 1.152a13.056 13.056 0 0 1-5.76 0.128 15.296 15.296 0 0 1-4.736-1.92 11.776 11.776 0 0 1-3.264-2.88l-13.376-18.688 86.272-74.112h34.816z m226.816-106.24v64H259.008v-64h496.96z" fill="#A7A3A2" p-id="4577"></path></svg> </div>`,
+    }
+    // 属性渲染的dom对象
+    const configDom = {
+      label: `<div class="configuration-item"> <div class="label">label：</div> <div class="val"><input type="text" value="$value" class="input" data-key="label" placeholder="请输入label值" /></div> </div>`,
+      model: `<div class="configuration-item"> <div class="require label">model：</div> <div class="val"><input type="text" value="$value" data-key="model" class="input" placeholder="请输入双向绑定的字段" /></div> </div>`,
+      data: `<div class="configuration-item"> <div class="require label">数据源：</div> <div class="val"><input type="text" value="$value" data-key="data" class="input" placeholder="请输入数据源的字段" /></div> </div>`,
+      placeholder: `<div class="configuration-item"> <div class="require label">占位符：</div> <div class="val"><input type="text" value="$value" data-key="placeholder" class="input" placeholder="请输入占位符" /></div> </div>`,
+    }
+    // 枚举, 控制选中的对象应该有哪些属性
+    const selectorEnum = {
+      input: ['label', 'model', 'placeholder'],
+      select: ['label', 'model', 'data', 'placeholder'],
+      dateSelect: ['label', 'model', 'placeholder']
+    }
+
+    function moduleRender() {
+      const modules = document.querySelector('#modules-box .modules')
+      for (const key in moduleDom) {
+        if (Object.hasOwnProperty.call(moduleDom, key)) {
+          const dom = moduleDom[key];
+          const dataDom = dom.replaceAll('$clickEvent', `addPreviewArea('${key}')`).replaceAll('$label', key)
+          modules.innerHTML += dataDom
+        }
+      }
+    }
 
     function showTips(tipsContent) {
       const tipContent = document.querySelector('#tipContent')
@@ -251,7 +295,6 @@
         item.style.display = 'block'
       })
     }
-
     function hideTips() {
       const tips = document.querySelectorAll('.tipsModel')
       const tipContent = document.querySelector('#tipContent')
@@ -260,7 +303,6 @@
         item.style.display = 'none'
       })
     }
-
     function copy(content) {
       navigator.clipboard.writeText(content)
         .then(() => {
@@ -271,31 +313,82 @@
         })
     }
     function addPreviewArea(type) {
+      const dataItem = { type: type, label: type, data: '', model: '', placeholder: '', }
+      previewDomList.push(dataItem)
+      previewRender()
+    }
+    function removePreviewArea() {
+      const previewItems = document.querySelectorAll('#preview-area .module-item')
+      for (let index = 0; index < previewItems.length; index++) {
+        const node = previewItems[index]
+        if (node.getAttribute('class').indexOf('active') !== -1) {
+          previewDomList.splice(index, 1)
+          previewRender()
+          break
+        }
+      }
+    }
+    function onChangeAttr() {
+      const previewItems = document.querySelectorAll('#preview-area .module-item')
+      const configurations = document.querySelectorAll('#configuration .configuration-item')
+      const configurationObj = {}
+      for (let index = 0; index < configurations.length; index++) {
+        const node = configurations[index]
+        const ipt = node.querySelector('.val .input')
+        const label = ipt.getAttribute('data-key')
+        const val = ipt.value
+        configurationObj[label] = val
+      }
+      for (let index = 0; index < previewItems.length; index++) {
+        const node = previewItems[index]
+        if (node.getAttribute('class').indexOf('active') !== -1) {
+          Object.assign(previewDomList[index], configurationObj)
+          previewRender()
+          return
+        }
+      }
+    }
+    function previewRender() {
       const area = document.querySelector('#preview-area')
-      const inputModel = `<div class="module-item" onclick="selectorAttr(this, 'input')"> <div class="label">input：</div> <div class="input model"></div> </div>`
-      const selectModel = `<div class="module-item" onclick="selectorAttr(this, 'select')"> <div class="label">select: </div> <div class="select model"> <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3458" width="15" height="15"> <path d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z" p-id="3459"></path> </svg> </div>`
-      if (type === 'input') area.innerHTML += inputModel
-      if (type === 'select') area.innerHTML += selectModel
+
+      area.innerHTML = ''
+      previewDomList.forEach((item, index) => {
+        const domStr = moduleDom[item.type].replaceAll('$label', item.label)
+          .replaceAll('$index', index)
+          .replaceAll('$clickEvent', `selectorAttr(this, '${item.type}')`)
+        area.innerHTML += domStr
+        if (index === previewDomList.length - 1 && currentActiveIndex === null) {
+          currentActiveIndex = index
+        }
+      })
+      const modules = document.querySelectorAll('#preview-area .module-item')
+      if (modules[currentActiveIndex]) {
+        modules[currentActiveIndex].classList.add('active')
+      } else if (modules.length) {
+        currentActiveIndex = 0
+        modules[currentActiveIndex].classList.add('active')
+      } else {
+        currentActiveIndex = null
+        return
+      }
+      const previewItems = document.querySelectorAll('#preview-area .module-item')
+      selectorAttr(previewItems[currentActiveIndex], previewDomList[currentActiveIndex].type)
     }
     function selectorAttr(e, type) {
       const configuration = document.querySelector('#configuration')
-      const preview = document.querySelector('#preview-area')
-      const previewItems = preview.querySelectorAll('.module-item')
+      const previewItems = document.querySelectorAll('#preview-area .module-item')
       previewItems.forEach(item => {
         item.classList.remove('active')
       })
       e.classList.add('active')
-      const label = `<div class="configuration-item"> <div class="label">label：</div> <div class="val"><input type="text" class="input" placeholder="请输入label值" /></div> </div>`
-      const model = `<div class="configuration-item"> <div class="require label">model：</div> <div class="val"><input type="text" class="input" placeholder="请输入双向绑定的字段" /></div> </div>`
-      const data = `<div class="configuration-item"> <div class="require label">数据源：</div> <div class="val"><input type="text" class="input" placeholder="请输入数据源的字段" /></div> </div>`
-      let inputConfig = []
+      currentActiveIndex = e.getAttribute('index')
       configuration.innerHTML = ''
-      if (type === 'input') inputConfig = [label, model]
-      if (type === 'select') inputConfig = [label, model, data]
-      inputConfig.forEach(item => {
-        configuration.innerHTML += item
+      selectorEnum[type].forEach((item, index) => {
+        const dataStr = configDom[item].replaceAll('$value', previewDomList[currentActiveIndex][item])
+        configuration.innerHTML += dataStr
       })
     }
+    moduleRender()
   </script>
 </body>
 

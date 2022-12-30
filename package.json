@@ -52,21 +52,21 @@
           "group": "navigation"
         },
         {
-          "when": "resourceLangId == javascript",
+          "when": "resourceLangId == vue",
           "command": "fengtao-web.editCode",
           "group": "z_commands"
         }
       ],
       "editor/title": [
         {
-          "when": "resourceLangId == javascript",
+          "when": "resourceLangId == vue",
           "command": "fengtao-web.editCode",
           "group": "navigation"
         }
       ],
       "editor/title/context": [
         {
-          "when": "resourceLangId == javascript",
+          "when": "resourceLangId == vue",
           "command": "fengtao-web.editCode",
           "group": "navigation"
         }
