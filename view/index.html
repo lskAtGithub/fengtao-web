@@ -10,6 +10,27 @@
       padding: 0;
       margin: 0;
       box-sizing: border-box;
+      font-family: "Microsoft Yahei";
+    }
+
+    *::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+      scrollbar-arrow-color: red;
+
+    }
+
+    *::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.2);
+      scrollbar-arrow-color: red;
+    }
+
+    *::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      border-radius: 0;
+      background: rgba(0, 0, 0, 0.1);
     }
 
     body {
@@ -17,6 +38,8 @@
       font-size: 14px;
       color: #1e2227;
       overflow: hidden;
+      padding: 0;
+      margin: 0;
     }
 
     .require {
@@ -38,6 +61,8 @@
       cursor: pointer;
       padding: 4px 16px;
       margin-left: 15px;
+      margin-top: 8px;
+      user-select: none;
     }
 
     .input {
@@ -77,15 +102,93 @@
       color: #1e2227;
       position: relative;
       width: 100%;
+      text-align: center;
     }
 
-    .dateSelect > svg {
+    .dateSelect>svg {
       position: absolute;
       left: 8px;
-      top: 5px;
+      top: 6px;
     }
 
-    #tipsModelDom {
+    .switch {
+      background: #dcdfe6;
+      width: 55px;
+      height: 26px;
+      border-radius: 25px;
+      position: relative;
+    }
+
+    .switch .dot {
+      background: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 28px;
+      position: relative;
+      top: 1px;
+      left: 2px;
+    }
+
+    .checkBox>label {
+      vertical-align: middle;
+      display: inline-block;
+      user-select: none;
+    }
+
+    .checkBox>label>input {
+      margin-right: 3px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .radio>label {
+      vertical-align: middle;
+      display: inline-block;
+      user-select: none;
+    }
+
+    .radio>label>input {
+      margin-right: 3px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .textarea {
+      padding: 0 16px;
+      height: 64px;
+      line-height: 64px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 12px;
+      color: #1e2227;
+      width: 100%;
+    }
+
+    .buttonGroup {
+      display: flex;
+      align-items: center;
+    }
+
+    .el-button {
+      padding: 12px;
+      width: 80px;
+      background: #fff;
+      font-weight: 500;
+      padding: 8px 20px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      color: #606266;
+      text-align: center;
+      margin: 0 5px;
+    }
+
+    .el-button[type=primary] {
+      background: #409eff;
+      color: #fff;
+    }
+
+    #dialogsModelDom {
       position: fixed;
       width: 450px;
       box-shadow: 0 0 5px 0 #ccc;
@@ -115,8 +218,36 @@
       z-index: 2;
     }
 
-    #tipContent {
+    #dialogContent {
       padding: 18px 12px;
+    }
+
+    #dialogTitle {
+      color: #1e2227;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .message {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 14px 24px;
+      font-size: 15px;
+      width: 460px;
+      border-radius: 5px;
+      user-select: none;
+    }
+
+    #errorMsg {
+      color: #f56c6c;
+      background: #f1e1e1;
+    }
+
+    #successMsg {
+      color: #67c23a;
+      background: #e2e9df;
     }
 
     #app {
@@ -170,6 +301,12 @@
       font-weight: 600;
       width: 85px;
       flex-shrink: 0;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modules .module-item .label.buttonGroup-label {
+      width: 130px;
     }
 
     .modules .module-item .model {
@@ -181,6 +318,15 @@
       border-right: 1px solid #ddd;
     }
 
+    .configuration-item.btn-group>span {
+      text-align: center;
+    }
+
+    .configuration-item.btn-group>* {
+      flex: 1;
+      flex-direction: 0;
+    }
+
     .configuration-item {
       display: flex;
       align-items: center;
@@ -188,7 +334,7 @@
     }
 
     .configuration-item .label {
-      width: 80px;
+      width: 90px;
       font-weight: 600;
     }
 
@@ -216,12 +362,7 @@
     <!-- 组件区 -->
     <div id="modules-box" class="app-items">
       <h2 class="title">组件选择</h2>
-      <div class="modules">
-        <!-- <div class="module-item" onclick="addPreviewArea('input')">
-          <div class="label">input：</div>
-          <div class="input model"></div>
-        </div> -->
-      </div>
+      <div class="modules"></div>
     </div>
     <!-- 预览区 -->
     <div id="preview-box" class="app-items">
@@ -233,49 +374,135 @@
       <h2 class="title">属性配置</h2>
       <div id="configuration"></div>
       <div class="config-btn">
-        <button class="button" onclick="removePreviewArea()">删除所选中dom</button>
+        <button class="button" onclick="removePreviewArea()">删除当前选中元素</button>
         <button class="button" onclick="onChangeAttr()">确认修改</button>
       </div>
     </div>
   </div>
   <div class="update-preview">
-    <button class="button">更新预览</button>
-    <button class="button">生成代码</button>
+    <button class="button" onclick="onGenerateCode()">生成代码</button>
   </div>
 
-  <div class="mask tipsModel" style="display: none;" onclick="hideTips()"></div>
-  <div style="display: none;" class="tipsModel" id="tipsModelDom">
-    <div id="tipContent"></div>
+  <div class="mask dialogsModel" style="display: none;" onclick="onDialogCancel()"></div>
+  <div style="display: none;" class="dialogsModel" id="dialogsModelDom">
+    <div id="dialogTitle"></div>
+    <div id="dialogContent"></div>
     <div class="model-btns">
-      <button class="button model-btn" onclick="hideTips()">确认</button>
+      <button class="button model-btn" onclick="onDialogConfirm()">确 认</button>
+      <button class="button model-btn" onclick="onDialogCancel()">取 消</button>
     </div>
   </div>
+  <div id="errorMsg" style="display: none;" class="message"></div>
+  <div id="successMsg" style="display: none;" class="message"></div>
 
   <script>
+    // 生成的code
+    var codeStr = `
+<template>
+  <div>
+    <el-form ref="form" :model="form" label-width="80px">
+      __$template
+    </el-form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'CreateEditModule',
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: () => false
+    }
+  },
+  data() {
+    return {
+      __$data
+    }
+  },
+  methods: __$methods
+}
+</script>
+
+<style scoped lang="scss"></style>
+
+    `
+    var __$template = ''
+    var __$data = ''
+    var __$methods = ''
+    // message 定时器对象
+    var messgaeClock = null
+    // dialog 弹窗的发布订阅, 此字段用于储存事件队列
+    var dialogObj = {
+      title: '',  // 标题
+      content: '', // 内容
+      success: null, // 确认 click event
+      fail: null // 取消 click event
+    }
     // 当前选中的元素
     var currentActiveIndex = null
-    // preview中所有的dom元素
+    // 预览 preview 中所有的dom元素
     var previewDomList = []
     // 组件渲染的dom对象
     const moduleDom = {
       input: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label：</div> <div class="input model"></div> </div>`,
       select: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="select model"> <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3458" width="15" height="15"> <path d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z" p-id="3459"></path> </svg> </div>`,
-      dateSelect: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="dateSelect model"> <svg t="1672398249238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4576" width="20" height="20"><path d="M390.784 128l-0.064 44.416h234.176V128h64v44.416h198.08V832H128V172.416h198.72V128h64zM326.72 235.584l-135.488 0.064v533.12h632.512v-533.12l-134.848-0.064v59.904h-64v-59.904H390.72v59.904h-64v-59.904z m202.432 216.96v254.4h53.888v32.384H426.88v-32.384h59.648V527.68l0.192-9.664 0.448-9.856-45.952 38.784-3.008 1.92-3.072 1.152a13.056 13.056 0 0 1-5.76 0.128 15.296 15.296 0 0 1-4.736-1.92 11.776 11.776 0 0 1-3.264-2.88l-13.376-18.688 86.272-74.112h34.816z m226.816-106.24v64H259.008v-64h496.96z" fill="#A7A3A2" p-id="4577"></path></svg> </div>`,
+      dateSelect: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="dateSelect model"> <svg t="1672398249238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4576" width="20" height="20"><path d="M390.784 128l-0.064 44.416h234.176V128h64v44.416h198.08V832H128V172.416h198.72V128h64zM326.72 235.584l-135.488 0.064v533.12h632.512v-533.12l-134.848-0.064v59.904h-64v-59.904H390.72v59.904h-64v-59.904z m202.432 216.96v254.4h53.888v32.384H426.88v-32.384h59.648V527.68l0.192-9.664 0.448-9.856-45.952 38.784-3.008 1.92-3.072 1.152a13.056 13.056 0 0 1-5.76 0.128 15.296 15.296 0 0 1-4.736-1.92 11.776 11.776 0 0 1-3.264-2.88l-13.376-18.688 86.272-74.112h34.816z m226.816-106.24v64H259.008v-64h496.96z" fill="#A7A3A2" p-id="4577"></path></svg> 至 </div>`,
+      switch: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="switch"> <div class="dot"></div> </div>`,
+      checkBox: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="checkBox model"> <label><input name="checkBoxOption" type="checkbox" value="" />多选选项一 </label> <label><input name="checkBoxOption" type="checkbox" value="" />多选选项二 </label> </div>`,
+      radio: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="radio model"> <label><input name="checkBoxOption" type="radio" value="" />单选选项一 </label> <label><input name="checkBoxOption" type="radio" value="" />单选选项二 </label> </div>`,
+      textarea: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label：</div> <div class="textarea model"></div> </div>`,
+      buttonGroup: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label buttonGroup-label">$label: </div> <div class="buttonGroup model"> <div class="el-button" type="primary">提交</div> <div class="el-button">取消</div> </div>`,
     }
     // 属性渲染的dom对象
     const configDom = {
       label: `<div class="configuration-item"> <div class="label">label：</div> <div class="val"><input type="text" value="$value" class="input" data-key="label" placeholder="请输入label值" /></div> </div>`,
       model: `<div class="configuration-item"> <div class="require label">model：</div> <div class="val"><input type="text" value="$value" data-key="model" class="input" placeholder="请输入双向绑定的字段" /></div> </div>`,
-      data: `<div class="configuration-item"> <div class="require label">数据源：</div> <div class="val"><input type="text" value="$value" data-key="data" class="input" placeholder="请输入数据源的字段" /></div> </div>`,
-      placeholder: `<div class="configuration-item"> <div class="require label">占位符：</div> <div class="val"><input type="text" value="$value" data-key="placeholder" class="input" placeholder="请输入占位符" /></div> </div>`,
+      data: `<div class="configuration-item"> <div class="label">数据源：</div> <div class="val"><input type="text" value="$value" data-key="data" class="input" placeholder="请输入数据源的字段" /></div> </div>`,
+      placeholder: `<div class="configuration-item"> <div class="label">占位符：</div> <div class="val"><input type="text" value="$value" data-key="placeholder" class="input" placeholder="请输入占位符" /></div> </div>`,
+      startPlaceholder: `<div class="configuration-item"> <div class="label">开始占位符：</div> <div class="val"><input type="text" value="$value" data-key="startPlaceholder" class="input" placeholder="请输入开始占位符" /></div> </div>`,
+      endPlaceholder: `<div class="configuration-item"> <div class="label">结束占位符：</div> <div class="val"><input type="text" value="$value" data-key="endPlaceholder" class="input" placeholder="请输入结束占位符" /></div> </div>`,
+      btns: '<div class="configuration-item push-btn-group button" onclick="onPushBtnInBtns()"> 往按钮组中新增一个按钮 </div>',
+      btnItem: '<div class="configuration-item btn-group"><span>名称：</span><input type="text" value="$nameValue" data-key="btnItem" class="input" data-key="btnName" placeholder="请输入按钮名称" /><span>类型：</span><input type="text" value="$typeValue" data-key="btnType" class="input" placeholder="请输入按钮类型" /><div class="button" style="flex: 0.8; font-size: 12px;text-align: center;margin-top: 0;" index="$index" onclick="onRemoveBtnItem(this)">删除</div> </div>',
     }
-    // 枚举, 控制选中的对象应该有哪些属性
+    // 枚举, 控制选中的对象应该有哪些属性配置项
     const selectorEnum = {
       input: ['label', 'model', 'placeholder'],
       select: ['label', 'model', 'data', 'placeholder'],
-      dateSelect: ['label', 'model', 'placeholder']
+      dateSelect: ['label', 'model', 'startPlaceholder', 'endPlaceholder'],
+      switch: ['label', 'model'],
+      checkBox: ['label', 'model', 'data'],
+      radio: ['label', 'model', 'data'],
+      textarea: ['label', 'model', 'placeholder'],
+      buttonGroup: ['btns']
     }
 
+    // 类
+    class message {
+      success(msg) {
+        const successMsg = document.querySelector('#successMsg')
+        successMsg.style.display = 'block'
+        successMsg.innerHTML = msg.content || msg
+        if (messgaeClock) clearTimeout(messgaeClock)
+        messgaeClock = setTimeout(() => {
+          successMsg.style.display = 'none'
+          messgaeClock = null
+        }, msg.delay || 5000)
+      }
+      error(msg) {
+        const errorMsg = document.querySelector('#successMsg')
+        successMsg.style.display = 'block'
+        successMsg.innerHTML = msg.content || msg
+        if (messgaeClock) clearTimeout(messgaeClock)
+        messgaeClock = setTimeout(() => {
+          successMsg.style.display = 'none'
+          messgaeClock = null
+        }, msg.delay || 5000)
+      }
+    }
+    this.$message = new message()
+
+    // 事件方法
     function moduleRender() {
       const modules = document.querySelector('#modules-box .modules')
       for (const key in moduleDom) {
@@ -287,57 +514,129 @@
       }
     }
 
-    function showTips(tipsContent) {
-      const tipContent = document.querySelector('#tipContent')
-      const tips = document.querySelectorAll('.tipsModel')
-      tipContent.innerHTML = tipsContent
-      tips.forEach(item => {
+    function onDialogConfirm() {
+      if (typeof dialogObj.success === 'function') {
+        dialogObj.success()
+        hideDialog()
+      } else {
+        hideDialog()
+      }
+    }
+    function onDialogCancel() {
+      if (typeof dialogObj.fail === 'function') {
+        dialogObj.fail()
+        hideDialog()
+      } else {
+        hideDialog()
+      }
+    }
+    function showDialog(popObj) {
+      Object.assign(dialogObj, popObj)
+      const dialogs = document.querySelectorAll('.dialogsModel')
+      const dialogTitle = document.querySelector('#dialogTitle')
+      const dialogContent = document.querySelector('#dialogContent')
+      dialogTitle.innerHTML = dialogObj.title
+      dialogContent.innerHTML = dialogObj.content
+      dialogs.forEach(item => {
         item.style.display = 'block'
       })
     }
-    function hideTips() {
-      const tips = document.querySelectorAll('.tipsModel')
-      const tipContent = document.querySelector('#tipContent')
-      tipContent.innerHTML = ''
-      tips.forEach(item => {
+    function hideDialog() {
+      const dialogs = document.querySelectorAll('.dialogsModel')
+      const dialogTitle = document.querySelectorAll('#dialogTitle')
+      const dialogContent = document.querySelector('#dialogContent')
+      dialogTitle.innerHTML = ''
+      dialogContent.innerHTML = ''
+      dialogs.forEach(item => {
         item.style.display = 'none'
+      })
+      dialogObj = {
+        title: '',
+        content: '',
+        success: null,
+        fail: null
+      }
+    }
+    function onGenerateCode() {
+      showDialog({
+        title: '提示',
+        content: '正在生成代码，是否继续',
+        success: () => {
+          console.log(previewDomList)
+          previewDomList.forEach(item=>{
+            if(item.type !== 'buttonGroup'){
+              
+            }
+          })
+        }
       })
     }
     function copy(content) {
       navigator.clipboard.writeText(content)
         .then(() => {
-          console.log("Text copied to clipboard...")
+          this.$message.success('复制成功')
         })
         .catch(err => {
-          console.log('Something went wrong', err);
+          this.$message.error('复制失败请重试')
         })
     }
     function addPreviewArea(type) {
-      const dataItem = { type: type, label: type, data: '', model: '', placeholder: '', }
+      const btns = [{ btnName: '提交', btnType: 'primary', index: 1 }, { btnName: '取消', btnType: 'defalut', index: 2 }]
+      const dataItem = { type: type, label: type, data: '', model: '', placeholder: '', startPlaceholder: '', endPlaceholder: '', btns: [] }
+      if (type === 'buttonGroup') dataItem.btns = JSON.parse(JSON.stringify(btns))
       previewDomList.push(dataItem)
       previewRender()
     }
     function removePreviewArea() {
-      const previewItems = document.querySelectorAll('#preview-area .module-item')
-      for (let index = 0; index < previewItems.length; index++) {
-        const node = previewItems[index]
-        if (node.getAttribute('class').indexOf('active') !== -1) {
-          previewDomList.splice(index, 1)
-          previewRender()
-          break
+      showDialog({
+        content: '确认要删除选中元素吗？',
+        success: () => {
+          const previewItems = document.querySelectorAll('#preview-area .module-item')
+          for (let index = 0; index < previewItems.length; index++) {
+            const node = previewItems[index]
+            if (node.getAttribute('class').indexOf('active') !== -1) {
+              previewDomList.splice(index, 1)
+              previewRender()
+              break
+            }
+          }
         }
-      }
+      })
+    }
+    function onRemoveBtnItem(e) {
+      onChangeAttr()
+      const currentIndex = e.getAttribute('index')
+      previewDomList[currentActiveIndex].btns.splice(currentIndex, 1)
+      previewRender()
+    }
+    function onPushBtnInBtns() {
+      previewDomList[currentActiveIndex].btns.push({
+        btnName: '',
+        btnType: ''
+      })
+      previewRender()
     }
     function onChangeAttr() {
       const previewItems = document.querySelectorAll('#preview-area .module-item')
       const configurations = document.querySelectorAll('#configuration .configuration-item')
       const configurationObj = {}
-      for (let index = 0; index < configurations.length; index++) {
-        const node = configurations[index]
-        const ipt = node.querySelector('.val .input')
-        const label = ipt.getAttribute('data-key')
-        const val = ipt.value
-        configurationObj[label] = val
+      // 如果当前选中元素为按钮需要另外处理
+      if (previewDomList[currentActiveIndex].type === "buttonGroup") {
+        const buttonGroups = document.querySelectorAll('#configuration .btn-group')
+        for (let index = 0; index < buttonGroups.length; index++) {
+          const node = buttonGroups[index]
+          const inputValue = node.querySelectorAll('.input')
+          previewDomList[currentActiveIndex].btns[index].btnName = inputValue[0].value
+          previewDomList[currentActiveIndex].btns[index].btnType = inputValue[1].value
+        }
+      } else {
+        for (let index = 0; index < configurations.length; index++) {
+          const node = configurations[index]
+          const ipt = node.querySelector('.val .input')
+          const label = ipt.getAttribute('data-key')
+          const val = ipt.value
+          configurationObj[label] = val
+        }
       }
       for (let index = 0; index < previewItems.length; index++) {
         const node = previewItems[index]
@@ -384,7 +683,14 @@
       currentActiveIndex = e.getAttribute('index')
       configuration.innerHTML = ''
       selectorEnum[type].forEach((item, index) => {
-        const dataStr = configDom[item].replaceAll('$value', previewDomList[currentActiveIndex][item])
+        let dataStr = configDom[item].replaceAll('$value', previewDomList[currentActiveIndex][item])
+        // 按钮组表现形式不同
+        if (previewDomList[currentActiveIndex].btns.length) {
+          previewDomList[currentActiveIndex].btns.map((item, index) => {
+            const itemDom = configDom.btnItem.replaceAll('$nameValue', item.btnName).replaceAll('$typeValue', item.btnType).replaceAll('$index', index)
+            dataStr += itemDom
+          })
+        }
         configuration.innerHTML += dataStr
       })
     }
