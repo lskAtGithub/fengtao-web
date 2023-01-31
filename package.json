@@ -3,6 +3,8 @@
   "displayName": "fengtao web",
   "description": "fengtao web pulgin",
   "version": "0.0.1",
+  "repository": "",
+  "publisher": "liushengkai",
   "engines": {
     "vscode": "^1.74.0"
   },
