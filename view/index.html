@@ -77,6 +77,10 @@
       width: 100%;
     }
 
+    .input>option {
+      padding: 8px 12px;
+    }
+
     .select {
       padding: 0 16px;
       height: 32px;
@@ -88,6 +92,27 @@
       font-size: 12px;
       color: #1e2227;
       width: 100%;
+    }
+
+    .dateTime {
+      padding: 0 16px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      outline: none;
+      text-align: left;
+      font-size: 12px;
+      color: #1e2227;
+      position: relative;
+      width: 100%;
+      text-align: center;
+    }
+
+    .dateTime>svg {
+      position: absolute;
+      left: 8px;
+      top: 6px;
     }
 
     .dateSelect {
@@ -106,6 +131,27 @@
     }
 
     .dateSelect>svg {
+      position: absolute;
+      left: 8px;
+      top: 6px;
+    }
+
+    .timeSelect {
+      padding: 0 16px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      outline: none;
+      text-align: left;
+      font-size: 12px;
+      color: #1e2227;
+      position: relative;
+      width: 100%;
+      text-align: center;
+    }
+
+    .timeSelect>svg {
       position: absolute;
       left: 8px;
       top: 6px;
@@ -230,7 +276,7 @@
 
     .message {
       position: fixed;
-      top: 80px;
+      top: 60px;
       left: 50%;
       transform: translate(-50%, -50%);
       padding: 14px 24px;
@@ -399,10 +445,12 @@
     // 生成的code
     var codeStr = `
 <template>
-  <div>
-    <el-form ref="form" :model="form" label-width="80px">
-      __$template
-    </el-form>
+  <div class="create-edit-module-box">
+    <div class="form-wrap">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
+        __$template
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -422,9 +470,16 @@ export default {
   },
   methods: __$methods
 }
-</script>
+<\/script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.create-edit-module-box{
+  .form-wrap{
+    width: 600px;
+    margin: 30px auto;
+  }
+}
+</style>
 
     `
     var __$template = ''
@@ -447,7 +502,9 @@ export default {
     const moduleDom = {
       input: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label：</div> <div class="input model"></div> </div>`,
       select: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="select model"> <svg t="1672380398335" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3458" width="15" height="15"> <path d="M787.2 380.8c-9.6-9.6-22.4-12.8-35.2-12.8l-480 3.2c-12.8 0-25.6 3.2-35.2 12.8-19.2 19.2-19.2 48 0 67.2l240 240c0 0 0 0 0 0 0 0 0 0 0 0 3.2 3.2 9.6 6.4 12.8 9.6 0 0 3.2 3.2 3.2 3.2 16 6.4 38.4 3.2 51.2-9.6l240-243.2C806.4 428.8 803.2 400 787.2 380.8z" p-id="3459"></path> </svg> </div>`,
-      dateSelect: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="dateSelect model"> <svg t="1672398249238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4576" width="20" height="20"><path d="M390.784 128l-0.064 44.416h234.176V128h64v44.416h198.08V832H128V172.416h198.72V128h64zM326.72 235.584l-135.488 0.064v533.12h632.512v-533.12l-134.848-0.064v59.904h-64v-59.904H390.72v59.904h-64v-59.904z m202.432 216.96v254.4h53.888v32.384H426.88v-32.384h59.648V527.68l0.192-9.664 0.448-9.856-45.952 38.784-3.008 1.92-3.072 1.152a13.056 13.056 0 0 1-5.76 0.128 15.296 15.296 0 0 1-4.736-1.92 11.776 11.776 0 0 1-3.264-2.88l-13.376-18.688 86.272-74.112h34.816z m226.816-106.24v64H259.008v-64h496.96z" fill="#A7A3A2" p-id="4577"></path></svg> 至 </div>`,
+      dateTime: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="dateTime model"> <svg t="1672398249238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4576" width="20" height="20"><path d="M390.784 128l-0.064 44.416h234.176V128h64v44.416h198.08V832H128V172.416h198.72V128h64zM326.72 235.584l-135.488 0.064v533.12h632.512v-533.12l-134.848-0.064v59.904h-64v-59.904H390.72v59.904h-64v-59.904z m202.432 216.96v254.4h53.888v32.384H426.88v-32.384h59.648V527.68l0.192-9.664 0.448-9.856-45.952 38.784-3.008 1.92-3.072 1.152a13.056 13.056 0 0 1-5.76 0.128 15.296 15.296 0 0 1-4.736-1.92 11.776 11.776 0 0 1-3.264-2.88l-13.376-18.688 86.272-74.112h34.816z m226.816-106.24v64H259.008v-64h496.96z" fill="#A7A3A2" p-id="4577"></path></svg> 至 </div>`,
+      dateSelect: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="dateSelect model"> <svg t="1672398249238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4576" width="20" height="20"><path d="M390.784 128l-0.064 44.416h234.176V128h64v44.416h198.08V832H128V172.416h198.72V128h64zM326.72 235.584l-135.488 0.064v533.12h632.512v-533.12l-134.848-0.064v59.904h-64v-59.904H390.72v59.904h-64v-59.904z m202.432 216.96v254.4h53.888v32.384H426.88v-32.384h59.648V527.68l0.192-9.664 0.448-9.856-45.952 38.784-3.008 1.92-3.072 1.152a13.056 13.056 0 0 1-5.76 0.128 15.296 15.296 0 0 1-4.736-1.92 11.776 11.776 0 0 1-3.264-2.88l-13.376-18.688 86.272-74.112h34.816z m226.816-106.24v64H259.008v-64h496.96z" fill="#A7A3A2" p-id="4577"></path></svg> </div>`,
+      timeSelect: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="timeSelect model"> <svg t="1672901821833" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3568" width="20" height="20"><path d="M949.638897 509.757936c0-241.799068-196.006116-437.805184-437.805184-437.805184-241.800092 0-437.806207 196.006116-437.806207 437.805184 0 241.811348 196.006116 437.817464 437.806207 437.817464 99.262748 0 190.149734-33.771151 263.59242-89.425705 3.015683-3.421936 4.999874-7.789407 4.999874-12.698207 0-10.717086-8.692986-19.407002-19.408025-19.407002-5.562692 0-10.513448 2.207271-14.048971 5.944386l-0.246617 0c-65.719794 48.358381-146.610102 77.313853-234.459916 77.313853-218.947618 0-396.469754-177.544649-396.469754-396.482033 0-218.97013 177.522136-396.470777 396.469754-396.470777 218.969107 0 396.469754 177.500647 396.469754 396.470777 0 66.865897-15.692401 129.814578-44.962028 185.110975l0 0.325411c-0.538259 1.845021-1.12359 3.645017-1.12359 5.627161 0 10.719132 8.688893 19.407002 19.407002 19.407002 8.353248 0 15.331173-5.357008 18.055215-12.742209l0 0.135076C931.289993 650.424676 949.638897 582.250994 949.638897 509.757936zM506.813373 276.017404c0-11.527544-9.367345-20.892843-20.917402-20.892843-11.527544 0-20.892843 9.365298-20.892843 20.892843l0 248.508887c0 0-2.520403 42.010813 41.786709 41.785685L731.994971 566.311976c0.068562 0 0.156566 0.045025 0.228197 0.045025 11.546987 0 20.914332-9.364275 20.914332-20.891819s-9.367345-20.892843-20.892843-20.938891L506.79086 524.526291 506.79086 276.153504C506.79086 276.108478 506.813373 276.06243 506.813373 276.017404z" fill="#A8A8A8" p-id="3569"></path></svg> </div>`,
       switch: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="switch"> <div class="dot"></div> </div>`,
       checkBox: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="checkBox model"> <label><input name="checkBoxOption" type="checkbox" value="" />多选选项一 </label> <label><input name="checkBoxOption" type="checkbox" value="" />多选选项二 </label> </div>`,
       radio: `<div class="module-item" index="$index" onclick="$clickEvent"> <div class="label">$label: </div> <div class="radio model"> <label><input name="checkBoxOption" type="radio" value="" />单选选项一 </label> <label><input name="checkBoxOption" type="radio" value="" />单选选项二 </label> </div>`,
@@ -462,14 +519,24 @@ export default {
       placeholder: `<div class="configuration-item"> <div class="label">占位符：</div> <div class="val"><input type="text" value="$value" data-key="placeholder" class="input" placeholder="请输入占位符" /></div> </div>`,
       startPlaceholder: `<div class="configuration-item"> <div class="label">开始占位符：</div> <div class="val"><input type="text" value="$value" data-key="startPlaceholder" class="input" placeholder="请输入开始占位符" /></div> </div>`,
       endPlaceholder: `<div class="configuration-item"> <div class="label">结束占位符：</div> <div class="val"><input type="text" value="$value" data-key="endPlaceholder" class="input" placeholder="请输入结束占位符" /></div> </div>`,
-      btns: '<div class="configuration-item push-btn-group button" onclick="onPushBtnInBtns()"> 往按钮组中新增一个按钮 </div>',
-      btnItem: '<div class="configuration-item btn-group"><span>名称：</span><input type="text" value="$nameValue" data-key="btnItem" class="input" data-key="btnName" placeholder="请输入按钮名称" /><span>类型：</span><input type="text" value="$typeValue" data-key="btnType" class="input" placeholder="请输入按钮类型" /><div class="button" style="flex: 0.8; font-size: 12px;text-align: center;margin-top: 0;" index="$index" onclick="onRemoveBtnItem(this)">删除</div> </div>',
+      btns: `<div class="configuration-item push-btn-group button" onclick="onPushBtnInBtns()"> 往按钮组中新增一个按钮 </div>`,
+      btnItem: `<div class="configuration-item btn-group">
+        <span>名称：</span><input type="text" value="$nameValue" data-key="btnItem" class="input" data-key="btnName" placeholder="请输入按钮名称" />
+        <span>类型：</span>
+        <select class="input" data-key="btnType" value="$typeValue" placeholder="请输入按钮类型">
+          <option value="default">default</option>
+          <option value="primary">primary</option> 
+        </select>  
+        <div class="button" style="flex: 0.8; font-size: 12px;text-align: center;margin-top: 0;" index="$index" onclick="onRemoveBtnItem(this)">删除</div>
+      </div>`,
     }
     // 枚举, 控制选中的对象应该有哪些属性配置项
     const selectorEnum = {
       input: ['label', 'model', 'placeholder'],
       select: ['label', 'model', 'data', 'placeholder'],
-      dateSelect: ['label', 'model', 'startPlaceholder', 'endPlaceholder'],
+      dateTime: ['label', 'model', 'startPlaceholder', 'endPlaceholder'],
+      dateSelect: ['label', 'model', 'placeholder'],
+      timeSelect: ['label', 'model', 'placeholder'],
       switch: ['label', 'model'],
       checkBox: ['label', 'model', 'data'],
       radio: ['label', 'model', 'data'],
@@ -478,7 +545,7 @@ export default {
     }
 
     // 类
-    class message {
+    class Message {
       success(msg) {
         const successMsg = document.querySelector('#successMsg')
         successMsg.style.display = 'block'
@@ -487,7 +554,7 @@ export default {
         messgaeClock = setTimeout(() => {
           successMsg.style.display = 'none'
           messgaeClock = null
-        }, msg.delay || 5000)
+        }, msg.delay || 3000)
       }
       error(msg) {
         const errorMsg = document.querySelector('#successMsg')
@@ -497,10 +564,99 @@ export default {
         messgaeClock = setTimeout(() => {
           successMsg.style.display = 'none'
           messgaeClock = null
-        }, msg.delay || 5000)
+        }, msg.delay || 3000)
       }
     }
-    this.$message = new message()
+    this.$message = new Message()
+
+    class Create {
+      template(item) {
+        let result = `<el-form-item label="${item.label}" prop="${item.model}">`
+        if (item.label === 'buttonGroup') result = `<el-form-item>`
+        switch (item.type) {
+          case 'input':
+            result += `<el-input v-model="ruleForm.${item.model}" placeholder="${item.placeholder}"></el-input>`
+            break;
+          case 'select':
+            if (item.data) {
+              result += `<el-select v-model="ruleForm.${item.model}" placeholder="${item.placeholder}"> <el-option v-for="(item, index) in ${item.data}" :key="index" :label="item.label" :value="${item.value}" /> </el-select>`
+            } else {
+              result += `<el-select v-model="ruleForm.${item.model}" placeholder="${item.placeholder}"> <el-option label="label1" value="value1"></el-option> </el-select>`
+            }
+            break;
+          case 'dateTime':
+            result += `<el-date-picker v-model="ruleForm.${item.model}" type="datetimerange" range-separator="至" start-placeholder="${item.startPlaceholder}" end-placeholder="${item.endPlaceholder}" />`
+            break;
+          case 'dateSelect':
+            result += `<el-date-picker v-model="ruleForm.${item.model}" type="date" placeholder="${item.placeholder}" />`
+            break;
+          case 'timeSelect':
+            result += `<el-time-picker v-model="ruleForm.${item.model}" placeholder="${item.placeholder}" />`
+            break;
+          case 'switch':
+            result += `<el-switch v-model="ruleForm.${item.model}" />`
+            break;
+          case 'checkBox':
+            if (item.data) {
+              result += `<el-checkbox-group v-model="ruleForm.${item.model}"> <el-checkbox v-for="(item, index) in ${item.data}" :key="index" :label="item.value">{{item.label}}</el-checkbox> </el-checkbox-group>`
+            } else {
+              result += `<el-checkbox-group v-model="ruleForm.${item.model}"> <el-checkbox label="复选框 A"></el-checkbox> </el-checkbox-group>`
+            }
+            break;
+          case 'radio':
+            if (item.data) {
+              result += `<el-radio-group v-model="ruleForm.${item.model}"> <el-radio v-for="(item, index) in ${item.data}" :key="index" :label="item.value">{{item.label}}</el-radio> </el-radio-group>`
+            } else {
+              result += `<el-radio-group v-model="ruleForm.${item.model}"> <el-radio :label="3">备选项</el-radio> </el-radio-group>`
+            }
+            break;
+          case 'textarea':
+            result += `<el-input type="textarea" :rows="3" placeholder="${item.placeholder}" v-model="ruleForm.${item.model}" />`
+            break;
+          case 'buttonGroup':
+            item.btns.map(i => {
+              result += `<el-button type="${i.btnType}">${i.btnName}</el-button>`
+            })
+            break;
+
+          default:
+            break;
+        }
+        result += `</el-form-item>`
+        return result
+      }
+      formData(item) {
+        if (item.type !== 'buttonGroup' && item.model) {
+          return `${item.model}: '',
+          `
+        }
+        return ''
+      }
+      data(item) {
+        if (item.type !== 'buttonGroup' && item.data) {
+          return `${item.data}: [],
+          `
+        }
+        return ''
+      }
+      methods(item) {
+        let result = `{}`
+        if (item.type === 'buttonGroup') {
+          result = `{
+            handleSubmitForm() {
+              this.$refs.ruleForm.validate((valid) => {
+                if (!valid) {
+                  return
+                }
+                // do something...
+              })
+            }
+          }`
+        }
+        return result
+      }
+    }
+    this.$create = new Create()
 
     // 事件方法
     function moduleRender() {
@@ -562,12 +718,20 @@ export default {
         title: '提示',
         content: '正在生成代码，是否继续',
         success: () => {
-          console.log(previewDomList)
-          previewDomList.forEach(item=>{
-            if(item.type !== 'buttonGroup'){
-              
-            }
+          previewDomList.forEach(item => {
+            __$data += this.$create.data(item)
           })
+          __$data += `rules: {},
+          ruleForm: {
+            `
+          previewDomList.forEach(item => {
+            __$template += this.$create.template(item)
+            __$data += this.$create.formData(item)
+            __$methods = this.$create.methods(item)
+          })
+          __$data += `}`
+          codeStr = codeStr.replaceAll('__$template', __$template).replaceAll('__$data', __$data).replaceAll('__$methods', __$methods)
+          copy(codeStr)
         }
       })
     }
@@ -581,7 +745,7 @@ export default {
         })
     }
     function addPreviewArea(type) {
-      const btns = [{ btnName: '提交', btnType: 'primary', index: 1 }, { btnName: '取消', btnType: 'defalut', index: 2 }]
+      const btns = [{ btnName: '提交', btnType: 'primary', index: 1 }, { btnName: '取消', btnType: 'default', index: 2 }]
       const dataItem = { type: type, label: type, data: '', model: '', placeholder: '', startPlaceholder: '', endPlaceholder: '', btns: [] }
       if (type === 'buttonGroup') dataItem.btns = JSON.parse(JSON.stringify(btns))
       previewDomList.push(dataItem)
@@ -643,9 +807,10 @@ export default {
         if (node.getAttribute('class').indexOf('active') !== -1) {
           Object.assign(previewDomList[index], configurationObj)
           previewRender()
-          return
+          break
         }
       }
+      this.$message.success('属性保存成功')
     }
     function previewRender() {
       const area = document.querySelector('#preview-area')
@@ -676,7 +841,31 @@ export default {
     function selectorAttr(e, type) {
       const configuration = document.querySelector('#configuration')
       const previewItems = document.querySelectorAll('#preview-area .module-item')
-      previewItems.forEach(item => {
+      // 在切换预览时, 自动保存属性
+      const configurations = configuration.querySelectorAll('.configuration-item')
+      const configurationObj = {}
+      // 如果当前选中元素为按钮需要另外处理
+      if (previewDomList[currentActiveIndex].type === "buttonGroup") {
+        const buttonGroups = document.querySelectorAll('#configuration .btn-group')
+        for (let index = 0; index < buttonGroups.length; index++) {
+          const node = buttonGroups[index]
+          const inputValue = node.querySelectorAll('.input')
+          previewDomList[currentActiveIndex].btns[index].btnName = inputValue[0].value
+          previewDomList[currentActiveIndex].btns[index].btnType = inputValue[1].value
+        }
+      } else {
+        for (let index = 0; index < configurations.length; index++) {
+          const node = configurations[index]
+          const ipt = node.querySelector('.val .input')
+          const label = ipt.getAttribute('data-key')
+          const val = ipt.value
+          configurationObj[label] = val
+        }
+      }
+      previewItems.forEach((item, index) => {
+        if (item.getAttribute('class').indexOf('active') !== -1) {
+          Object.assign(previewDomList[index], configurationObj)
+        }
         item.classList.remove('active')
       })
       e.classList.add('active')
@@ -687,7 +876,8 @@ export default {
         // 按钮组表现形式不同
         if (previewDomList[currentActiveIndex].btns.length) {
           previewDomList[currentActiveIndex].btns.map((item, index) => {
-            const itemDom = configDom.btnItem.replaceAll('$nameValue', item.btnName).replaceAll('$typeValue', item.btnType).replaceAll('$index', index)
+            let itemDom = configDom.btnItem.replaceAll('selected', "")
+            itemDom = configDom.btnItem.replaceAll('$nameValue', item.btnName).replaceAll(`value="${item.btnType}"`, `value="${item.btnType}" selected`).replaceAll('$index', index)
             dataStr += itemDom
           })
         }
