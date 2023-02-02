@@ -1,3 +1,3 @@
 # fengtao-web README
 
-深圳峰涛科技有限公司 vscode 插件
+峰涛 vscode 插件，  基于 yocode 开发
